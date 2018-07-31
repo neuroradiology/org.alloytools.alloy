@@ -20,7 +20,7 @@ enum boolean { true, false }
 The Alloy signature is the top level point of access. To allow multiple implementations,
 there is an indirect binding to an implementation via the Java services model.
 
-The Alloy object provides access to the installed solvers and the compilers.
+The Alloy object provides access to the installed _solvers_ and the _compiler_.
 
 For now, a single compiler is assumed. However, it might be interesting to support
 multiple compilers. However, this will require an expansion of this API since it
@@ -28,7 +28,7 @@ then must define the AST in detail. An aspect that this API skimps on.
 
 A compiler compiles a source string/file to an _Alloy Module_. A _solver_ can then take a
 _command_ from this module and create an _Alloy Solution_. A solution can then have
-zero or more instances with differnet values for this solution.
+zero or more Alloy Instances with differnet values for this solution.
 
 ```alloy
 one sig Alloy {
@@ -91,6 +91,28 @@ sig TColumnType	{
 }
 ```
 
+## Commands
+
+Each Alloy Module has one or more commands, where a command is either an assertion (`check`)
+or a `run` command. A command provides a root for the solver as well as a limit of how
+many atoms a solution can make of different types. It also provides an _expects_ which 
+indicates if a solution is expected to be satisfied.
+
+```alloy
+abstract sig TCommand {
+	name	: Name,
+	scopes 	: set TScope,
+	expects	: Expects
+	
+}
+sig TRun, TCheck extends TCommand {}
+sig TScope {
+	signature 	: TSig,
+	size		: Int,
+	exact		: boolean
+}
+```
+
 ## Solvers
 
 Alloy Solvers are _plugged in_ the application. The creation of a solver is indirectly
@@ -123,8 +145,8 @@ can be used.
 
 ```alloy
 sig AlloySolution {
-	instances	: set AlloyInstance,
 	satisfied	: boolean,
+        command 	: TCommand,
 	module_		: AlloyModule,
 	solver		: AlloySolver,
 	none_		: ITupleSet,
@@ -134,20 +156,6 @@ enum Expects {
 	UNKNOWN, SATISFIED, UNSATISFIED
 }
 
-abstract sig TCommand {
-	name	: Name,
-	module_	: AlloyModule,
-	scopes 	: set TScope,
-	expects	: Expects
-	
-}
-sig TScope {
-	signature 	: TSig,
-	size		: Int,
-	exact		: boolean
-}
-
-sig TRun, TCheck extends TCommand {}
 ```
 
 ### Instances
