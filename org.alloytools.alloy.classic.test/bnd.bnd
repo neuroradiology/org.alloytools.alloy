@@ -2,6 +2,7 @@
 
 -testpath: \
     org.alloytools.alloy.classic.provider;version=latest,\
+    org.alloytools.alloy.api;version=latest,\
     org.alloytools.alloy.core;version=latest,\
     org.alloytools.kodkod.core;version=latest,\
     org.alloytools.kodkod.sat4j;version=latest,\
@@ -14,4 +15,6 @@
 	org.alloytools.kodkod.nativesat.x86-linux;version=latest,\
 	org.alloytools.kodkod.nativesat.shared;version=latest,\
 	org.alloytools.kodkod.nativesat.amd64-linux;version=latest, \
-	biz.aQute.bndlib;packages=*
+	biz.aQute.bndlib;packages=*,\
+	slf4j.api, \
+	slf4j.simple

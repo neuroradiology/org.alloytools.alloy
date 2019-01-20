@@ -1,6 +1,6 @@
 package org.alloytools.alloy.classic.provider;
 
-import org.alloytools.alloy.core.api.TSig;
+import org.alloytools.alloy.module.api.TSig;
 import org.alloytools.alloy.solver.api.AlloySolution;
 import org.alloytools.alloy.solver.api.IAtom;
 import org.alloytools.alloy.solver.api.ITupleSet;
@@ -98,6 +98,11 @@ public class Atom implements IAtom {
 		}
 
 		return atom == o.atom;
+	}
+
+	@Override
+	public int toInt() {
+		return Integer.parseInt(getName());
 	}
 
 }

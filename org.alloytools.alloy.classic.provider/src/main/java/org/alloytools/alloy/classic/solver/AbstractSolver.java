@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.allotools.conversion.util.DTOs;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.core.api.AlloyModule;
-import org.alloytools.alloy.core.api.TCommand;
+import org.alloytools.alloy.module.api.AlloyModule;
+import org.alloytools.alloy.module.api.TCommand;
 import org.alloytools.alloy.solver.api.AlloyOptions;
 import org.alloytools.alloy.solver.api.AlloySolver;
 
@@ -27,9 +27,10 @@ public abstract class AbstractSolver implements AlloySolver {
 
 	protected AlloyOptions processOptions(AlloyModule module, TCommand command, AlloyOptions optionsOrNull) {
 
-		AlloyOptions options = optionsOrNull == null ? DTOs.dflt(getOptionsType()) : optionsOrNull;
+		AlloyOptions options = optionsOrNull == null ? newOptions() : optionsOrNull;
 
-		assert getOptionsType().isAssignableFrom(options.getClass()) : options.getClass()
+		assert newOptions().getClass()
+			.isAssignableFrom(options.getClass()) : options.getClass()
 			+ " is invalid option class for " + this;
 
 		Map<String, String> sourceOptions = module.getSourceOptions(command);

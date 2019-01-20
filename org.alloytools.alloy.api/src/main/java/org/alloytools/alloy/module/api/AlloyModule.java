@@ -1,9 +1,12 @@
-package org.alloytools.alloy.core.api;
+package org.alloytools.alloy.module.api;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import org.alloytools.alloy.core.api.AlloyCompiler;
+import org.alloytools.alloy.core.api.CompilerMessage;
 
 /**
  * Represents an Alloy Module
@@ -11,9 +14,10 @@ import java.util.Set;
 public interface AlloyModule {
 
 	/**
-	 * The source path of this module. In certain cases
+	 * The source path of this module. In certain cases a module does not have a
+	 * path, for example when it is compiled from a string.
 	 * 
-	 * @return
+	 * @return an optional to a module
 	 */
 	Optional<String> getPath();
 
@@ -75,16 +79,9 @@ public interface AlloyModule {
 	 * {@code *} which implies all.
 	 * 
 	 * @param command
-	 * @return
+	 * @return Options given in the source for the given command
 	 */
 	Map<String, String> getSourceOptions(TCommand command);
-
-	/**
-	 * TODO mark an option as used for required
-	 * 
-	 * @param optionKey
-	 */
-	void usedOption(String optionKey);
 
 	/**
 	 * Return the compiler that compiled this module.

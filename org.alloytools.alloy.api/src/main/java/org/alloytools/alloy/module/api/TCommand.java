@@ -1,4 +1,5 @@
-package org.alloytools.alloy.core.api;
+
+package org.alloytools.alloy.module.api;
 
 import java.util.Set;
 
@@ -16,13 +17,13 @@ public interface TCommand {
 	/**
 	 * Set scopes on the command
 	 * 
-	 * @return
+	 * @return get the sig scopes in this command
 	 */
 	Set<TScope> getScopes();
 
 	/**
 	 * Answer the expects part of the run. The expects predicts if the run
-	 * should have a solition or not. If not specified, {@link Expects#UNKNOWN}
+	 * should have a solution or not. If not specified, {@link Expects#UNKNOWN}
 	 * is returned.
 	 * 
 	 * @return expects

@@ -1,7 +1,6 @@
 -sub: *.bnd
 
 -buildpath: \
-    osgi.enroute.base.api,\
 	org.alloytools.alloy.api;version=latest, \
     org.alloytools.alloy.core;version=latest, \
     org.alloytools.util;version=latest, \

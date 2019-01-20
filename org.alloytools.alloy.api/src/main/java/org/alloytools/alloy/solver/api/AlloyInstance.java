@@ -1,7 +1,7 @@
 package org.alloytools.alloy.solver.api;
 
-import org.alloytools.alloy.core.api.TField;
-import org.alloytools.alloy.core.api.TSig;
+import org.alloytools.alloy.module.api.TField;
+import org.alloytools.alloy.module.api.TSig;
 
 /**
  * An Alloy Solution is calculated by an {@link AlloySolver}. A solution,
@@ -32,13 +32,11 @@ public interface AlloyInstance {
 	/**
 	 * Get the value of a variable from a function.
 	 * 
-	 * @param func
-	 *            the function name
-	 * @param var
-	 *            the variable name
-	 * @return
+	 * @param functionName the function name
+	 * @param varName the variable name
+	 * @return the value, could be empty
 	 */
-	ITupleSet getVariable(String func, String var);
+	ITupleSet getVariable(String functionName, String varName);
 
 	/**
 	 * Evaluate a command in the context of this instance. TODO what is the

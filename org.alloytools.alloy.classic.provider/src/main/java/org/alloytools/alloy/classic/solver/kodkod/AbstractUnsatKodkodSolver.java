@@ -14,8 +14,8 @@ public abstract class AbstractUnsatKodkodSolver extends AbstractKodkodSolver {
 	}
 
 	@Override
-	public Class<? extends AlloyOptions> getOptionsType() {
-		return UnsatKodkodOptions.class;
+	public AlloyOptions newOptions() {
+		return new UnsatKodkodOptions();
 	}
 
 	protected void setOptions(A4Options classic, AlloyOptions modern) {

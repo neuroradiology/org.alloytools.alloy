@@ -6,14 +6,13 @@ Export-Package: \
 	org.alloytools.alloy.classic.solver,\
 	org.alloytools.alloy.classic.solver.kodkod,\
 	org.alloytools.alloy.classic.provider,\
-	org.alloytools.alloy.core.api,\
-	org.alloytools.alloy.solver.api, \
+	org.alloytools.alloy.module.api,\
+	org.alloytools.alloy.solver.api,\
 	org.osgi.dto
 
 -conditionalpackage: aQute.lib*
 
 -buildpath: \
-	osgi.enroute.base.api;version=2.1,\
 	org.alloytools.alloy.api;version=latest,\
 	org.alloytools.alloy.core;version=latest,\
 	org.alloytools.kodkod.core;version=latest,\

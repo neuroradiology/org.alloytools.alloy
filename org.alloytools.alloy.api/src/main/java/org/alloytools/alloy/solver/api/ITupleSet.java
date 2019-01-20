@@ -99,7 +99,7 @@ public interface ITupleSet extends Iterable<ITuple> {
 	 * If this tuple sets holds a single scalar then this method returns the
 	 * scalar.
 	 * 
-	 * @return
+	 * @return the scalar value
 	 */
 	default Optional<IAtom> scalar() {
 		if (isScalar()) {

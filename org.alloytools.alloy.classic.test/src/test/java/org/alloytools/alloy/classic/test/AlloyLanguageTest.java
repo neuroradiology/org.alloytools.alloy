@@ -13,8 +13,8 @@ import org.allotools.conversion.util.DTOs;
 import org.allotools.services.util.Services;
 import org.alloytools.alloy.core.api.Alloy;
 import org.alloytools.alloy.core.api.AlloyCompiler;
-import org.alloytools.alloy.core.api.AlloyModule;
-import org.alloytools.alloy.core.api.TRun;
+import org.alloytools.alloy.module.api.AlloyModule;
+import org.alloytools.alloy.module.api.TRun;
 import org.alloytools.alloy.solver.api.AlloySolution;
 import org.alloytools.alloy.solver.api.AlloySolver;
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class AlloyLanguageTest {
 	@Test
 	public void testAlloy() {
 		long now = System.currentTimeMillis();
-		AlloySolution solution = solver.run(run, null);
+		AlloySolution solution = solver.solve(run, null, null);
 		try {
 			switch (run.getExpects()) {
 			case SATISFIED:

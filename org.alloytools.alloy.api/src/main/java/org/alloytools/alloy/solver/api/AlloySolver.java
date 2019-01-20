@@ -1,6 +1,6 @@
 package org.alloytools.alloy.solver.api;
 
-import org.alloytools.alloy.core.api.TCommand;
+import org.alloytools.alloy.module.api.TCommand;
 
 /**
  * Represents a solver of Alloy Modules.
@@ -51,17 +51,16 @@ public interface AlloySolver {
 	 * 
 	 * @return a DTO with options
 	 */
-	Class<? extends AlloyOptions> getOptionsType();
+	AlloyOptions newOptions();
 
 	/**
 	 * Create a solution out of a command, a module
 	 * 
-	 * @param command
-	 *            the command to run/check
-	 * @param options
-	 *            the specified options or null if not options are given
+	 * @param command the command to run/check
+	 * @param options the specified options or null if not options are given
+	 * @param instance provide the lower bound for the solution
 	 * @return a Solution that could be unsatisfied
 	 */
-	AlloySolution run(TCommand command, AlloyOptions options);
+	AlloySolution solve(TCommand command, AlloyOptions options, AlloyInstance instance);
 
 }

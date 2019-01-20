@@ -2,6 +2,8 @@ package org.alloytools.alloy.core.api;
 
 import java.io.File;
 
+import org.alloytools.alloy.module.api.AlloyModule;
+
 /**
  * An Alloy Compiler that can compile a file or a source and provide an {@link AlloyModule}
  */

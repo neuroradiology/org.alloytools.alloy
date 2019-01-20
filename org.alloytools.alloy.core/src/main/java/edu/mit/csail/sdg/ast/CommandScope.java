@@ -15,8 +15,8 @@
 
 package edu.mit.csail.sdg.ast;
 
-import org.alloytools.alloy.core.api.TScope;
-import org.alloytools.alloy.core.api.TSig;
+import org.alloytools.alloy.module.api.TScope;
+import org.alloytools.alloy.module.api.TSig;
 
 import edu.mit.csail.sdg.alloy4.ErrorSyntax;
 import edu.mit.csail.sdg.alloy4.Pos;

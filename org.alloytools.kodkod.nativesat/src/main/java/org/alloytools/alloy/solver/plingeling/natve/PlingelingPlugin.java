@@ -6,7 +6,6 @@ import java.util.List;
 import org.alloytools.alloy.classic.solver.kodkod.AbstractKodkodSolver;
 import org.alloytools.alloy.classic.solver.kodkod.KodkodOptions;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.solver.api.AlloyOptions;
 import org.alloytools.alloy.solver.api.SolverType;
 import org.alloytools.nativecode.util.NativeCode;
 
@@ -46,8 +45,8 @@ public class PlingelingPlugin extends AbstractKodkodSolver {
     }
 
     @Override
-    public Class< ? extends AlloyOptions> getOptionsType() {
-        return PlingelingOptions.class;
+    public PlingelingOptions newOptions() {
+        return new PlingelingOptions();
     }
 
     @Override

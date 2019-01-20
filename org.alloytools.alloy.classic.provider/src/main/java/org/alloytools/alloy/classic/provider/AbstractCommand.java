@@ -2,11 +2,11 @@ package org.alloytools.alloy.classic.provider;
 
 import java.util.Set;
 
-import org.alloytools.alloy.core.api.AlloyModule;
-import org.alloytools.alloy.core.api.TCheck;
-import org.alloytools.alloy.core.api.TCommand;
-import org.alloytools.alloy.core.api.TRun;
-import org.alloytools.alloy.core.api.TScope;
+import org.alloytools.alloy.module.api.AlloyModule;
+import org.alloytools.alloy.module.api.TCheck;
+import org.alloytools.alloy.module.api.TCommand;
+import org.alloytools.alloy.module.api.TRun;
+import org.alloytools.alloy.module.api.TScope;
 
 import edu.mit.csail.sdg.ast.Command;
 

@@ -14,10 +14,10 @@ import org.alloytools.alloy.classic.provider.Atom;
 import org.alloytools.alloy.classic.provider.TupleSet;
 import org.alloytools.alloy.classic.solver.AbstractSolver;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.core.api.AlloyModule;
-import org.alloytools.alloy.core.api.TCommand;
-import org.alloytools.alloy.core.api.TField;
-import org.alloytools.alloy.core.api.TSig;
+import org.alloytools.alloy.module.api.AlloyModule;
+import org.alloytools.alloy.module.api.TCommand;
+import org.alloytools.alloy.module.api.TField;
+import org.alloytools.alloy.module.api.TSig;
 import org.alloytools.alloy.solver.api.AlloyInstance;
 import org.alloytools.alloy.solver.api.AlloyOptions;
 import org.alloytools.alloy.solver.api.AlloySolution;
@@ -48,7 +48,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 	}
 
 	@Override
-	public AlloySolution run(TCommand command, AlloyOptions optionsOrNull) {
+	public AlloySolution solve(TCommand command, AlloyOptions optionsOrNull, AlloyInstance lowerBound) {
 		AbstractCommand c = (AbstractCommand) command;
 		return command(command.getModule(), optionsOrNull, c.getOriginalCommand());
 	}
@@ -211,16 +211,16 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 				return command;
 			}
 
+			@Override
+			public AlloyOptions getOptions() {
+				return options;
+			}
+
 		};
 	}
 
 	protected A4Solution getSolution(Command command, CompModule orig, A4Reporter reporter, A4Options opt) {
 		return TranslateAlloyToKodkod.execute_command(reporter, orig.getAllReachableSigs(), command, opt);
-	}
-
-	@Override
-	public Class<? extends AlloyOptions> getOptionsType() {
-		return KodkodOptions.class;
 	}
 
 	public static SatSolver toSatSolver(String id) {
@@ -281,7 +281,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 
 	protected SATFactory getSATFactory() {
 		try {
-			KodkodOptions options = (KodkodOptions) getOptionsType().newInstance();
+			KodkodOptions options = (KodkodOptions) newOptions();
 			return getSATFactory(options);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -290,6 +290,11 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 
 	protected A4Reporter getReporter() {
 		return new A4Reporter();
+	}
+
+	@Override
+	public AlloyOptions newOptions() {
+		return new KodkodOptions();
 	}
 
 }

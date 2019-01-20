@@ -3,8 +3,8 @@ package org.alloytools.alloy.solver.api;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.alloytools.alloy.core.api.AlloyModule;
-import org.alloytools.alloy.core.api.TCommand;
+import org.alloytools.alloy.module.api.AlloyModule;
+import org.alloytools.alloy.module.api.TCommand;
 
 /**
  * A solution is the answer of a solver. It can either be satisfied or not. If
@@ -19,6 +19,13 @@ public interface AlloySolution extends Iterable<AlloyInstance> {
 	 * @return the solver that created this solution
 	 */
 	AlloySolver getSolver();
+
+	/**
+	 * Return the solver that created this solution
+	 * 
+	 * @return the solver that created this solution
+	 */
+	AlloyOptions getOptions();
 
 	/**
 	 * Return the module that was used for this solution

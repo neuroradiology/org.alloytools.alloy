@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 import org.allotools.services.util.Services;
 import org.alloytools.alloy.core.api.Alloy;
 import org.alloytools.alloy.core.api.AlloyCompiler;
-import org.alloytools.alloy.core.api.AlloyModule;
 import org.alloytools.alloy.core.api.CompilerMessage;
 import org.alloytools.alloy.core.api.SourceResolver;
-import org.alloytools.alloy.core.api.TCheck;
-import org.alloytools.alloy.core.api.TCommand;
-import org.alloytools.alloy.core.api.TRun;
-import org.alloytools.alloy.core.api.TSig;
+import org.alloytools.alloy.module.api.AlloyModule;
+import org.alloytools.alloy.module.api.TCheck;
+import org.alloytools.alloy.module.api.TCommand;
+import org.alloytools.alloy.module.api.TRun;
+import org.alloytools.alloy.module.api.TSig;
 import org.alloytools.alloy.solver.api.AlloySolver;
 import org.alloytools.alloy.solver.api.AlloySolverFactory;
 import org.alloytools.metainf.util.ManifestAccess;
@@ -179,12 +179,6 @@ public class AlloyClassicFacade implements Alloy {
 						}
 
 						@Override
-						public void usedOption(String optionKey) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
 						public AlloyCompiler getCompiler() {
 							return compiler();
 						}
@@ -277,12 +271,6 @@ public class AlloyClassicFacade implements Alloy {
 						@Override
 						public Map<String, String> getSourceOptions(TCommand command) {
 							return Collections.emptyMap();
-						}
-
-						@Override
-						public void usedOption(String optionKey) {
-							// TODO Auto-generated method stub
-
 						}
 
 						@Override

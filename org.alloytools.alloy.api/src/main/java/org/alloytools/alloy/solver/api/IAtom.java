@@ -1,10 +1,11 @@
 package org.alloytools.alloy.solver.api;
 
-import org.alloytools.alloy.core.api.TSig;
+import org.alloytools.alloy.module.api.TSig;
 
 /**
  * An atom is an immutable object that has no meaning. Atoms always belong to a
- * single solution.
+ * single Alloy Solution and cannot be used across solutions. However, the same
+ * atoms are used across Alloy Instances.
  */
 public interface IAtom extends Comparable<IAtom> {
 
@@ -19,7 +20,7 @@ public interface IAtom extends Comparable<IAtom> {
 	/**
 	 * Get the owning solution
 	 * 
-	 * @return the owner
+	 * @return the owner of the atom
 	 */
 	AlloySolution getSolution();
 
@@ -101,11 +102,8 @@ public interface IAtom extends Comparable<IAtom> {
 	boolean equals(Object o);
 
 	/**
-	 * TODO needed?
-	 * 
-	 * @return
+	 * Return the int value, assuming this atom is an Int. This will throw a
+	 * Runtime Exception if the atom is not an Int
 	 */
-	default int toInt() {
-		return Integer.parseInt(getName());
-	}
+	int toInt();
 }
