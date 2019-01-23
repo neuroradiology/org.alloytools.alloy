@@ -3,7 +3,7 @@ package org.alloytools.kodkod.sat4j;
 import org.alloytools.alloy.classic.solver.kodkod.AbstractKodkodSolver;
 import org.alloytools.alloy.classic.solver.kodkod.KodkodOptions;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.solver.api.SolverType;
+import org.alloytools.alloy.core.api.SolverType;
 import org.sat4j.minisat.SolverFactory;
 
 import kodkod.engine.satlab.SATFactory;

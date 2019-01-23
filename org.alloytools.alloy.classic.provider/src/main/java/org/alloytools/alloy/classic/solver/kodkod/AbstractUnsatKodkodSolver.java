@@ -1,7 +1,7 @@
 package org.alloytools.alloy.classic.solver.kodkod;
 
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.solver.api.AlloyOptions;
+import org.alloytools.alloy.core.api.SolverOptions;
 
 import edu.mit.csail.sdg.translator.A4Options;
 import edu.mit.csail.sdg.translator.A4Solution;
@@ -14,11 +14,11 @@ public abstract class AbstractUnsatKodkodSolver extends AbstractKodkodSolver {
 	}
 
 	@Override
-	public AlloyOptions newOptions() {
+	public SolverOptions newOptions() {
 		return new UnsatKodkodOptions();
 	}
 
-	protected void setOptions(A4Options classic, AlloyOptions modern) {
+	protected void setOptions(A4Options classic, SolverOptions modern) {
 		super.setOptions(classic, modern);
 		UnsatKodkodOptions m = (UnsatKodkodOptions) modern;
 		classic.coreGranularity = m.coreGranularity;

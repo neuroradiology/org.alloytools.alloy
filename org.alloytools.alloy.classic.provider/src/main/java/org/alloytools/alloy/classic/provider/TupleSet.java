@@ -8,24 +8,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.alloytools.alloy.solver.api.AlloySolution;
-import org.alloytools.alloy.solver.api.IAtom;
-import org.alloytools.alloy.solver.api.ITuple;
-import org.alloytools.alloy.solver.api.ITupleSet;
+import org.alloytools.alloy.core.api.Solution;
+import org.alloytools.alloy.core.api.IAtom;
+import org.alloytools.alloy.core.api.IRelation;
+import org.alloytools.alloy.core.api.ITuple;
 
-public class TupleSet implements ITupleSet {
+public class TupleSet implements IRelation {
 
-	final AlloySolution	solution;
+	final Solution	solution;
 	final int			arity;
 	final ITuple[]		tuples;
 
-	TupleSet(AlloySolution solution, int arity, Tuple[] tuples) {
+	TupleSet(Solution solution, int arity, Tuple[] tuples) {
 		this.solution = solution;
 		this.tuples = tuples;
 		this.arity = arity;
 	}
 
-	public TupleSet(AlloySolution solution, int arity, List<? extends IAtom> atoms) {
+	public TupleSet(Solution solution, int arity, List<? extends IAtom> atoms) {
 		this(solution, arity, toTuples(solution, arity, atoms));
 	}
 
@@ -35,7 +35,7 @@ public class TupleSet implements ITupleSet {
 	}
 
 	@Override
-	public ITupleSet join(ITupleSet right) {
+	public IRelation join(IRelation right) {
 
 		assert solution == right.getSolution();
 
@@ -66,7 +66,7 @@ public class TupleSet implements ITupleSet {
 	}
 
 	@Override
-	public ITupleSet product(ITupleSet right) {
+	public IRelation product(IRelation right) {
 
 		assert solution == right.getSolution();
 
@@ -108,7 +108,7 @@ public class TupleSet implements ITupleSet {
 	}
 
 	@Override
-	public ITupleSet tail() {
+	public IRelation tail() {
 		return split(1, arity);
 	}
 
@@ -124,11 +124,11 @@ public class TupleSet implements ITupleSet {
 	}
 
 	@Override
-	public AlloySolution getSolution() {
+	public Solution getSolution() {
 		return solution;
 	}
 
-	static Tuple[] toTuples(AlloySolution solution, int arity, List<? extends IAtom> atoms) {
+	static Tuple[] toTuples(Solution solution, int arity, List<? extends IAtom> atoms) {
 		Set<Tuple> removeDuplicates = new HashSet<>();
 		for (int i = 0; i < atoms.size(); i += arity) {
 			int base = i;
@@ -171,7 +171,7 @@ public class TupleSet implements ITupleSet {
 		return sb.toString();
 	}
 
-	public ITupleSet toIdent() {
+	public IRelation toIdent() {
 
 		List<IAtom> atoms = new ArrayList<>();
 		for (ITuple t : this) {

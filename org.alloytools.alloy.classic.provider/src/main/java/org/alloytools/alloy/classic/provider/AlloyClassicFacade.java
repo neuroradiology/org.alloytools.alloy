@@ -17,18 +17,19 @@ import java.util.stream.Collectors;
 
 import org.allotools.services.util.Services;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.core.api.AlloyCompiler;
+import org.alloytools.alloy.core.api.Compiler;
 import org.alloytools.alloy.core.api.CompilerMessage;
+import org.alloytools.alloy.core.api.Module;
+import org.alloytools.alloy.core.api.Solver;
+import org.alloytools.alloy.core.api.AlloySolverFactory;
 import org.alloytools.alloy.core.api.SourceResolver;
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TCheck;
-import org.alloytools.alloy.module.api.TCommand;
-import org.alloytools.alloy.module.api.TRun;
-import org.alloytools.alloy.module.api.TSig;
-import org.alloytools.alloy.solver.api.AlloySolver;
-import org.alloytools.alloy.solver.api.AlloySolverFactory;
+import org.alloytools.alloy.core.api.TCheck;
+import org.alloytools.alloy.core.api.TCommand;
+import org.alloytools.alloy.core.api.TRun;
+import org.alloytools.alloy.core.api.TSig;
 import org.alloytools.metainf.util.ManifestAccess;
 
+import aQute.lib.io.IO;
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.ConstList;
 import edu.mit.csail.sdg.ast.Sig;
@@ -45,10 +46,12 @@ public class AlloyClassicFacade implements Alloy {
 			+ ")\\s*=\\s*(?<value>[^\\s]+)\\s*$", Pattern.MULTILINE);
 	final Path				home;
 
-	final List<AlloySolver>	solvers		= new ArrayList<>();
+	final List<Solver>	solvers		= new ArrayList<>();
+	private File			preferencesDir;
 
 	public AlloyClassicFacade(Path home) {
 		this.home = home;
+		this.preferencesDir = IO.getFile("~/.alloy/preferences");
 	}
 
 	public AlloyClassicFacade() {
@@ -64,7 +67,7 @@ public class AlloyClassicFacade implements Alloy {
 	}
 
 	@Override
-	public synchronized List<AlloySolver> getSolvers() {
+	public synchronized List<Solver> getSolvers() {
 		if (solvers.isEmpty()) {
 			for (AlloySolverFactory factory : Services.getServices(AlloySolverFactory.class)) {
 				solvers.addAll(factory.getAvailableSolvers(this));
@@ -74,7 +77,7 @@ public class AlloyClassicFacade implements Alloy {
 	}
 
 	@Override
-	public Optional<AlloySolver> getSolver(String id) {
+	public Optional<Solver> getSolver(String id) {
 		return getSolvers().stream()
 			.filter(s -> s.getId()
 				.equals(id))
@@ -82,11 +85,11 @@ public class AlloyClassicFacade implements Alloy {
 	}
 
 	@Override
-	public AlloyCompiler compiler(SourceResolver resolver) {
-		return new AlloyCompiler() {
+	public Compiler compiler(SourceResolver resolver) {
+		return new Compiler() {
 
 			@Override
-			public AlloyModule compile(File file) {
+			public Module compile(File file) {
 				try {
 					return compileSource(new String(Files.readAllBytes(file.toPath()), "UTF-8"));
 				} catch (IOException e) {
@@ -96,11 +99,11 @@ public class AlloyClassicFacade implements Alloy {
 			}
 
 			@Override
-			public AlloyModule compileSource(String source) {
+			public Module compileSource(String source) {
 				return compileSource(null, source);
 			}
 
-			AlloyModule compileSource(String path, String source) {
+			Module compileSource(String path, String source) {
 				List<Option> options = getOptions(source);
 
 				A4Reporter reporter = new A4Reporter();
@@ -125,7 +128,7 @@ public class AlloyClassicFacade implements Alloy {
 
 						@Override
 						public List<TRun> getRuns() {
-							AlloyModule THIS = this;
+							Module THIS = this;
 							return module.getAllCommands()
 								.stream()
 								.filter(c -> !c.isCheck())
@@ -135,7 +138,7 @@ public class AlloyClassicFacade implements Alloy {
 
 						@Override
 						public List<TCheck> getChecks() {
-							AlloyModule THIS = this;
+							Module THIS = this;
 							return module.getAllCommands()
 								.stream()
 								.filter(c -> c.isCheck())
@@ -179,7 +182,7 @@ public class AlloyClassicFacade implements Alloy {
 						}
 
 						@Override
-						public AlloyCompiler getCompiler() {
+						public Compiler getCompiler() {
 							return compiler();
 						}
 					};
@@ -274,7 +277,7 @@ public class AlloyClassicFacade implements Alloy {
 						}
 
 						@Override
-						public AlloyCompiler getCompiler() {
+						public Compiler getCompiler() {
 							return compiler();
 						}
 					};
@@ -295,7 +298,7 @@ public class AlloyClassicFacade implements Alloy {
 			}
 
 			@Override
-			public AlloyModule compile(String path) {
+			public Module compile(String path) {
 				return compileSource(resolver.resolve(path));
 			}
 
@@ -309,7 +312,7 @@ public class AlloyClassicFacade implements Alloy {
 	}
 
 	@Override
-	public AlloyCompiler compiler() {
+	public Compiler compiler() {
 		return compiler(new SourceResolver() {
 
 			@Override
@@ -324,12 +327,6 @@ public class AlloyClassicFacade implements Alloy {
 				}
 			}
 		});
-	}
-
-	@Override
-	public Path getFile(String pathWithSlashes) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public static String getVersion() {
@@ -353,5 +350,10 @@ public class AlloyClassicFacade implements Alloy {
 			.sorted()
 			.distinct()
 			.collect(Collectors.toMap(option -> option.key, option -> option.value));
+	}
+
+	@Override
+	public File getPreferencesDir(String id) {
+		return new File(preferencesDir, id);
 	}
 }

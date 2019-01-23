@@ -20,10 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TCheck;
-import org.alloytools.alloy.module.api.TRun;
-import org.alloytools.alloy.module.api.TScope;
+import org.alloytools.alloy.core.api.Module;
+import org.alloytools.alloy.core.api.TCheck;
+import org.alloytools.alloy.core.api.TRun;
+import org.alloytools.alloy.core.api.TScope;
 
 import edu.mit.csail.sdg.alloy4.ConstList;
 import edu.mit.csail.sdg.alloy4.ConstList.TempList;
@@ -346,7 +346,7 @@ public final class Command extends Browsable implements TCheck, TRun {
     }
 
     @Override
-    public AlloyModule getModule() {
+    public Module getModule() {
         // TODO Auto-generated method stub
         return null;
     }

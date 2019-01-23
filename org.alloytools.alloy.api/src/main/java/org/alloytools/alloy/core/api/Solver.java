@@ -1,12 +1,10 @@
-package org.alloytools.alloy.solver.api;
-
-import org.alloytools.alloy.module.api.TCommand;
+package org.alloytools.alloy.core.api;
 
 /**
  * Represents a solver of Alloy Modules.
  * 
  */
-public interface AlloySolver {
+public interface Solver {
 
 	/**
 	 * The identity of the solver. This identity must be unique world wide so a
@@ -51,7 +49,7 @@ public interface AlloySolver {
 	 * 
 	 * @return a DTO with options
 	 */
-	AlloyOptions newOptions();
+	SolverOptions newOptions();
 
 	/**
 	 * Create a solution out of a command, a module
@@ -61,6 +59,6 @@ public interface AlloySolver {
 	 * @param instance provide the lower bound for the solution
 	 * @return a Solution that could be unsatisfied
 	 */
-	AlloySolution solve(TCommand command, AlloyOptions options, AlloyInstance instance);
+	Solution solve(TCommand command, SolverOptions options, Instance instance);
 
 }

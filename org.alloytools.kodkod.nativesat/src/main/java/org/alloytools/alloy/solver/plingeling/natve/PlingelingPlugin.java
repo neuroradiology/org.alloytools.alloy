@@ -6,7 +6,7 @@ import java.util.List;
 import org.alloytools.alloy.classic.solver.kodkod.AbstractKodkodSolver;
 import org.alloytools.alloy.classic.solver.kodkod.KodkodOptions;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.solver.api.SolverType;
+import org.alloytools.alloy.core.api.SolverType;
 import org.alloytools.nativecode.util.NativeCode;
 
 import kodkod.engine.satlab.SATFactory;
@@ -62,7 +62,7 @@ public class PlingelingPlugin extends AbstractKodkodSolver {
         if (poptions.portfolio)
             opts.add("-p");
 
-        final String executable = NativeCode.cacheBinary(getAlloy().getFile("binary"), "plingeling").toFile().getAbsolutePath();
+        final String executable = NativeCode.cacheBinary(getAlloy().getPreferencesDir("binary").toPath(), "plingeling").toFile().getAbsolutePath();
         return SATFactory.externalFactory(executable == null ? "plingeling" : executable, null, opts.toArray(new String[opts.size()]));
     }
 

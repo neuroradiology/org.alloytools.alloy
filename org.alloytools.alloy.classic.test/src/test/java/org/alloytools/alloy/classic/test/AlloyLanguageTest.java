@@ -12,11 +12,11 @@ import java.util.List;
 import org.allotools.conversion.util.DTOs;
 import org.allotools.services.util.Services;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.core.api.AlloyCompiler;
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TRun;
-import org.alloytools.alloy.solver.api.AlloySolution;
-import org.alloytools.alloy.solver.api.AlloySolver;
+import org.alloytools.alloy.core.api.Compiler;
+import org.alloytools.alloy.core.api.Module;
+import org.alloytools.alloy.core.api.Solution;
+import org.alloytools.alloy.core.api.Solver;
+import org.alloytools.alloy.core.api.TRun;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -28,9 +28,9 @@ import aQute.lib.io.IO;
 public class AlloyLanguageTest {
 
 	Alloy				alloy;
-	AlloyModule			module;
+	Module			module;
 	TRun				run;
-	private AlloySolver	solver;
+	private Solver	solver;
 	private String		name;
 
 	@Parameters(name="{index} {0} {3} {4}")
@@ -45,8 +45,8 @@ public class AlloyLanguageTest {
 		for (File f : testFiles) {
 			for (Alloy alloy : alloys) {
 				alloy.getSolvers();
-				AlloyCompiler compiler = alloy.compiler();
-				AlloyModule module = compiler.compile(f);
+				Compiler compiler = alloy.compiler();
+				Module module = compiler.compile(f);
 				if (module == null) {
 					System.out.println("Is no module " + f);
 					continue;
@@ -55,7 +55,7 @@ public class AlloyLanguageTest {
 					fail("Compile failed for " + f.getName() + " " + module.getErrors());
 				}
 				assertTrue(f.getPath(), module.isValid());
-				for (AlloySolver solver : alloy.getSolvers()) {
+				for (Solver solver : alloy.getSolvers()) {
 					for (TRun run : module.getRuns()) {
 						result.add(new Object[] { f.getName(), alloy, module, run, solver });
 					}
@@ -65,7 +65,7 @@ public class AlloyLanguageTest {
 		return result;
 	}
 
-	public AlloyLanguageTest(String name, Alloy alloy, AlloyModule module, TRun run, AlloySolver solver)
+	public AlloyLanguageTest(String name, Alloy alloy, Module module, TRun run, Solver solver)
 			throws IOException {
 		this.name = name;
 		this.alloy = alloy;
@@ -77,7 +77,7 @@ public class AlloyLanguageTest {
 	@Test
 	public void testAlloy() {
 		long now = System.currentTimeMillis();
-		AlloySolution solution = solver.solve(run, null, null);
+		Solution solution = solver.solve(run, null, null);
 		try {
 			switch (run.getExpects()) {
 			case SATISFIED:

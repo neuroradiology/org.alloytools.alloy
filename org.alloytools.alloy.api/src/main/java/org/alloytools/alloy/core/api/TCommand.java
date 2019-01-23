@@ -1,5 +1,5 @@
 
-package org.alloytools.alloy.module.api;
+package org.alloytools.alloy.core.api;
 
 import java.util.Set;
 
@@ -35,5 +35,5 @@ public interface TCommand {
 	 * 
 	 * @return the module
 	 */
-	AlloyModule getModule();
+	Module getModule();
 }

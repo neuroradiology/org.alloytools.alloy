@@ -1,17 +1,14 @@
-package org.alloytools.alloy.module.api;
+package org.alloytools.alloy.core.api;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.alloytools.alloy.core.api.AlloyCompiler;
-import org.alloytools.alloy.core.api.CompilerMessage;
-
 /**
  * Represents an Alloy Module
  */
-public interface AlloyModule {
+public interface Module {
 
 	/**
 	 * The source path of this module. In certain cases a module does not have a
@@ -88,5 +85,5 @@ public interface AlloyModule {
 	 * 
 	 * @return the compiler
 	 */
-	AlloyCompiler getCompiler();
+	Compiler getCompiler();
 }

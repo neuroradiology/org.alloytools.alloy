@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 
 import org.alloytools.alloy.classic.provider.AlloyClassicFacade;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TField;
-import org.alloytools.alloy.module.api.TRun;
-import org.alloytools.alloy.module.api.TSig;
-import org.alloytools.alloy.solver.api.AlloyInstance;
-import org.alloytools.alloy.solver.api.AlloySolution;
-import org.alloytools.alloy.solver.api.AlloySolver;
-import org.alloytools.alloy.solver.api.IAtom;
+import org.alloytools.alloy.core.api.Instance;
+import org.alloytools.alloy.core.api.Module;
+import org.alloytools.alloy.core.api.Solution;
+import org.alloytools.alloy.core.api.Solver;
+import org.alloytools.alloy.core.api.IAtom;
+import org.alloytools.alloy.core.api.TField;
+import org.alloytools.alloy.core.api.TRun;
+import org.alloytools.alloy.core.api.TSig;
 import org.junit.Test;
 
 public class AlloyImplTest {
@@ -37,12 +37,12 @@ public class AlloyImplTest {
 
 	@Test
 	public void testSolversAll() {
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("run { 1 = 1 }");
 
 		for (TRun run : module.getRuns()) {
-			for (AlloySolver solver : ai.getSolvers()) {
-				AlloySolution solution = solver.solve(run, null, null);
+			for (Solver solver : ai.getSolvers()) {
+				Solution solution = solver.solve(run, null, null);
 				assertTrue(solution.iterator()
 					.hasNext());
 			}
@@ -52,13 +52,13 @@ public class AlloyImplTest {
 	@Test
 	public void iteratorImmutable() throws Exception {
 		Alloy ai = new AlloyClassicFacade();
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("some sig B {}\n run show{} for 3");
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 		TRun run = module.getRuns()
 			.get(0);
-		AlloySolution solution = solver.solve(run, null, null);
+		Solution solution = solver.solve(run, null, null);
 		TSig B = module.getSig("B")
 			.get();
 			
@@ -81,7 +81,7 @@ public class AlloyImplTest {
 		}
 	}
 
-	private List<List<IAtom>> atoms(AlloySolution solution, TSig B) {
+	private List<List<IAtom>> atoms(Solution solution, TSig B) {
 		return slurp(solution).stream()
 			.map(inst -> inst.getAtoms(B)
 				.asList())
@@ -96,14 +96,14 @@ public class AlloyImplTest {
 
 	@Test
 	public void iterator() throws Exception {
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("pred two[y:Int] { y = 1 or y = 2 or y = 3 } run two ");
 
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 		for (TRun run : module.getRuns()) {
 
-			AlloySolution solution = solver.solve(run, null, null);
+			Solution solution = solver.solve(run, null, null);
 			List<Integer> collect = solution.stream()
 				.map(instance -> instance.getVariable("two", "y")
 					.scalar()
@@ -117,16 +117,16 @@ public class AlloyImplTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testIteratorNoElements() throws Exception {
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("pred nothing[y:Int] { y = 1 and y = 2 } run nothing ");
 
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 
 		TRun run = module.getRuns()
 			.get(0);
 
-		AlloySolution solution = solver.solve(run, null, null);
+		Solution solution = solver.solve(run, null, null);
 		assertFalse(solution.isSatisfied());
 		solution.iterator()
 			.next();
@@ -134,19 +134,19 @@ public class AlloyImplTest {
 
 	@Test
 	public void simple() throws Exception {
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("some sig B {}\n" + "some sig A {  x : \"abc\" } \n" + "run Foo2 { #A =1 } for 2");
 		assertNotNull(module);
 		System.out.println("Sigs " + module.getSigs());
 		System.out.println("Runs " + module.getRuns());
 
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 		for (TRun run : module.getRuns()) {
 
-			AlloySolution solution = solver.solve(run, null, null);
+			Solution solution = solver.solve(run, null, null);
 
-			for (AlloyInstance instance : solution) {
+			for (Instance instance : solution) {
 
 				for (TSig sig : module.getSigs()) {
 					System.out.println(sig + "\t" + instance.getAtoms(sig));
@@ -161,7 +161,7 @@ public class AlloyImplTest {
 	@Test
 	public void expects() throws Exception {
 		Alloy ai = new AlloyClassicFacade();
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource(//
 				"pred foo[x, y, z: Int] {" //
 					+ " x < 5 and y < 5\n" //
@@ -169,14 +169,14 @@ public class AlloyImplTest {
 					+ "} "//
 					+ "run foo for 5 int");
 
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 
 		for (TRun run : module.getRuns()) {
 
-			AlloySolution solution = solver.solve(run, null, null);
+			Solution solution = solver.solve(run, null, null);
 
-			for (AlloyInstance instance : solution) {
+			for (Instance instance : solution) {
 				int x = instance.getVariable(run.getName(), "x")
 					.scalar()
 					.orElseThrow(Exception::new)
@@ -198,17 +198,17 @@ public class AlloyImplTest {
 	@Test
 	public void sortedOutput() throws Exception {
 		Alloy ai = new AlloyClassicFacade();
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("some sig B {}\nrun { #B =9 } for 16");
 
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 		for (TRun run : module.getRuns()) {
 
-			AlloySolution solution = solver.solve(run, null, null);
+			Solution solution = solver.solve(run, null, null);
 			// TSig B = module.getSig("B").get();
 
-			for (AlloyInstance instance : solution) {
+			for (Instance instance : solution) {
 				System.out.println(solution.none());
 				System.out.println(instance.universe());
 				System.out.println(instance.ident());
@@ -219,22 +219,22 @@ public class AlloyImplTest {
 	@Test
 	public void commands() throws Exception {
 		Alloy ai = new AlloyClassicFacade();
-		AlloyModule module = ai.compiler()
+		Module module = ai.compiler()
 			.compileSource("some sig B {}");
 
-		AlloySolver solver = ai.getSolvers()
+		Solver solver = ai.getSolvers()
 			.get(0);
 
 		for (TRun run : module.getRuns()) {
 
-			AlloySolution solution = solver.solve(run, null, null);
+			Solution solution = solver.solve(run, null, null);
 
 			TSig B = module.getSig("B")
 				.get();
 			TSig univ = module.getSig("univ")
 				.get();
 
-			for (AlloyInstance instance : solution) {
+			for (Instance instance : solution) {
 				System.out.println(instance.getAtoms(univ));
 				System.out.println(instance.getAtoms(B));
 			}

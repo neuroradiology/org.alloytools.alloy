@@ -1,4 +1,4 @@
-package org.alloytools.alloy.module.api;
+package org.alloytools.alloy.core.api;
 
 /**
  * A scope regulates the A scope setting on a command (check/run)

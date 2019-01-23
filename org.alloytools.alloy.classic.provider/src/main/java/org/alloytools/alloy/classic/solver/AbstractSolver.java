@@ -4,12 +4,12 @@ import java.util.Map;
 
 import org.allotools.conversion.util.DTOs;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TCommand;
-import org.alloytools.alloy.solver.api.AlloyOptions;
-import org.alloytools.alloy.solver.api.AlloySolver;
+import org.alloytools.alloy.core.api.Module;
+import org.alloytools.alloy.core.api.SolverOptions;
+import org.alloytools.alloy.core.api.Solver;
+import org.alloytools.alloy.core.api.TCommand;
 
-public abstract class AbstractSolver implements AlloySolver {
+public abstract class AbstractSolver implements Solver {
 
 	private final Alloy core;
 
@@ -25,9 +25,9 @@ public abstract class AbstractSolver implements AlloySolver {
 		return getName();
 	}
 
-	protected AlloyOptions processOptions(AlloyModule module, TCommand command, AlloyOptions optionsOrNull) {
+	protected SolverOptions processOptions(Module module, TCommand command, SolverOptions optionsOrNull) {
 
-		AlloyOptions options = optionsOrNull == null ? newOptions() : optionsOrNull;
+		SolverOptions options = optionsOrNull == null ? newOptions() : optionsOrNull;
 
 		assert newOptions().getClass()
 			.isAssignableFrom(options.getClass()) : options.getClass()

@@ -1,6 +1,4 @@
-package org.alloytools.alloy.solver.api;
-
-import org.alloytools.alloy.module.api.TSig;
+package org.alloytools.alloy.core.api;
 
 /**
  * An atom is an immutable object that has no meaning. Atoms always belong to a
@@ -22,7 +20,7 @@ public interface IAtom extends Comparable<IAtom> {
 	 * 
 	 * @return the owner of the atom
 	 */
-	AlloySolution getSolution();
+	Solution getSolution();
 
 	/**
 	 * Get the signature of this atom
@@ -36,7 +34,7 @@ public interface IAtom extends Comparable<IAtom> {
 	 * 
 	 * @return a tupleset with one atom
 	 */
-	ITupleSet asTupleSet();
+	IRelation asTupleSet();
 
 	/**
 	 * Each atom has a unique index int the universe.
@@ -54,7 +52,7 @@ public interface IAtom extends Comparable<IAtom> {
 	 *            the tuple set to join with
 	 * @return a new tuple set that is the Alloy join of this and the right
 	 */
-	default ITupleSet join(ITupleSet right) {
+	default IRelation join(IRelation right) {
 		return asTupleSet().join(right);
 	}
 
@@ -65,7 +63,7 @@ public interface IAtom extends Comparable<IAtom> {
 	 *            the tuple set to create the product with
 	 * @return a new tuple set that is the Alloy product of this and the right
 	 */
-	default ITupleSet product(ITupleSet right) {
+	default IRelation product(IRelation right) {
 		return asTupleSet().product(right);
 	}
 
@@ -74,7 +72,7 @@ public interface IAtom extends Comparable<IAtom> {
 	 * 
 	 * @return a tupleset of itself
 	 */
-	default ITupleSet head() {
+	default IRelation head() {
 		return asTupleSet();
 	}
 
@@ -83,7 +81,7 @@ public interface IAtom extends Comparable<IAtom> {
 	 * 
 	 * @return an empty tuple set
 	 */
-	default ITupleSet tail() {
+	default IRelation tail() {
 		return getSolution().none();
 	}
 

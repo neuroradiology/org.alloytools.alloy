@@ -1,38 +1,35 @@
-package org.alloytools.alloy.solver.api;
+package org.alloytools.alloy.core.api;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TCommand;
 
 /**
  * A solution is the answer of a solver. It can either be satisfied or not. If
  * it is satisfied then you can ask for the _instances_.
  * 
  */
-public interface AlloySolution extends Iterable<AlloyInstance> {
+public interface Solution extends Iterable<Instance> {
 
 	/**
 	 * Return the solver that created this solution
 	 * 
 	 * @return the solver that created this solution
 	 */
-	AlloySolver getSolver();
+	Solver getSolver();
 
 	/**
 	 * Return the solver that created this solution
 	 * 
 	 * @return the solver that created this solution
 	 */
-	AlloyOptions getOptions();
+	SolverOptions getOptions();
 
 	/**
 	 * Return the module that was used for this solution
 	 * 
 	 * @return the module that was used this solution
 	 */
-	AlloyModule getModule();
+	Module getModule();
 
 	/**
 	 * Answer the command that was used for this solution
@@ -52,14 +49,14 @@ public interface AlloySolution extends Iterable<AlloyInstance> {
 	 * 
 	 * @return a tuple set representing none.
 	 */
-	ITupleSet none();
+	IRelation none();
 
 	/**
 	 * Turn this solution into a stream of instances.
 	 * 
 	 * @return a stream of instances
 	 */
-	default Stream<AlloyInstance> stream() {
+	default Stream<Instance> stream() {
 		return StreamSupport.stream(this.spliterator(), false);
 	}
 }

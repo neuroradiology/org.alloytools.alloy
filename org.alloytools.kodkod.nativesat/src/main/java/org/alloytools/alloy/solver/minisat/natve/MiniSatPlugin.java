@@ -3,7 +3,7 @@ package org.alloytools.alloy.solver.minisat.natve;
 import org.alloytools.alloy.classic.solver.kodkod.AbstractKodkodSolver;
 import org.alloytools.alloy.classic.solver.kodkod.KodkodOptions;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.solver.api.SolverType;
+import org.alloytools.alloy.core.api.SolverType;
 
 import kodkod.engine.satlab.MiniSat;
 import kodkod.engine.satlab.SATFactory;

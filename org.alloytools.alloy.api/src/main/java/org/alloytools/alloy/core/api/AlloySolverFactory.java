@@ -1,8 +1,6 @@
-package org.alloytools.alloy.solver.api;
+package org.alloytools.alloy.core.api;
 
 import java.util.Set;
-
-import org.alloytools.alloy.core.api.Alloy;
 
 /**
  * Provides access to the solvers embedded in the local application. To add a
@@ -21,5 +19,5 @@ public interface AlloySolverFactory {
 	 *            the home.
 	 * @return a set of Alloy Solver
 	 */
-	Set<AlloySolver> getAvailableSolvers(Alloy alloy);
+	Set<Solver> getAvailableSolvers(Alloy alloy);
 }

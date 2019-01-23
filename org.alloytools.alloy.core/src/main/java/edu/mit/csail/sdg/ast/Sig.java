@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.alloytools.alloy.module.api.TColumnType;
-import org.alloytools.alloy.module.api.TField;
-import org.alloytools.alloy.module.api.TSig;
+import org.alloytools.alloy.core.api.TColumnType;
+import org.alloytools.alloy.core.api.TField;
+import org.alloytools.alloy.core.api.TSig;
 import org.alloytools.util.table.Table;
 
 import edu.mit.csail.sdg.alloy4.ConstList;

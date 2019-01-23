@@ -1,23 +1,23 @@
-package org.alloytools.alloy.solver.api;
+package org.alloytools.alloy.core.api;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * An ITupleSet is a matrix of {@link IAtom}s. The {@link #arity()} is the width
- * of the matrix and the {@link #size()} is the length of the matrix. An
- * ITupleSet always belongs to an {@link AlloySolution}. A row in the matrix is
- * called a <em>tuple</em>.
+ * An IRelation is a matrix of {@link IAtom}s. The {@link #arity()} is the width
+ * of the relation and the {@link #size()} is the length of the relation. An
+ * IRelation always belongs to an {@link Solution}. A row in the relation
+ * is called a <em>tuple</em>.
  */
-public interface ITupleSet extends Iterable<ITuple> {
+public interface IRelation extends Iterable<ITuple> {
 
 	/**
 	 * The solution this set belongs to
 	 * 
 	 * @return the alloy solution
 	 */
-	AlloySolution getSolution();
+	Solution getSolution();
 
 	/**
 	 * The arity of this tuple set, also called the width.
@@ -40,7 +40,7 @@ public interface ITupleSet extends Iterable<ITuple> {
 	 *            the tuple set to join with
 	 * @return a new tuple set that is the Alloy join of this and the right
 	 */
-	ITupleSet join(ITupleSet right);
+	IRelation join(IRelation right);
 
 	/**
 	 * Create the product atom with a tuple set
@@ -49,14 +49,14 @@ public interface ITupleSet extends Iterable<ITuple> {
 	 *            the tuple set to create the product with
 	 * @return a new tuple set that is the Alloy product of this and the right
 	 */
-	ITupleSet product(ITupleSet right);
+	IRelation product(IRelation right);
 
 	/**
 	 * Provides a new tupleset with the left column
 	 * 
 	 * @return a tupleset of itself
 	 */
-	ITupleSet head();
+	IRelation head();
 
 	/**
 	 * An new tuple set that is equal to this tuple set but lacks the first
@@ -64,7 +64,7 @@ public interface ITupleSet extends Iterable<ITuple> {
 	 * 
 	 * @return a tuple set
 	 */
-	ITupleSet tail();
+	IRelation tail();
 
 	/**
 	 * Since Alloy stores all atoms as tuple sets also simple scalars are stored

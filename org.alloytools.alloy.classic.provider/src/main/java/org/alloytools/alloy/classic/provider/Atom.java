@@ -1,9 +1,9 @@
 package org.alloytools.alloy.classic.provider;
 
-import org.alloytools.alloy.module.api.TSig;
-import org.alloytools.alloy.solver.api.AlloySolution;
-import org.alloytools.alloy.solver.api.IAtom;
-import org.alloytools.alloy.solver.api.ITupleSet;
+import org.alloytools.alloy.core.api.Solution;
+import org.alloytools.alloy.core.api.IAtom;
+import org.alloytools.alloy.core.api.IRelation;
+import org.alloytools.alloy.core.api.TSig;
 
 public class Atom implements IAtom {
 
@@ -12,9 +12,9 @@ public class Atom implements IAtom {
 	final String		prefix;
 	final int			index;
 	final TSig			sig;
-	final AlloySolution	solution;
+	final Solution	solution;
 
-	public Atom(AlloySolution solution, TSig sig, Object atom, String name) {
+	public Atom(Solution solution, TSig sig, Object atom, String name) {
 		this.solution = solution;
 		this.atom = atom;
 		this.sig = sig;
@@ -65,7 +65,7 @@ public class Atom implements IAtom {
 	}
 
 	@Override
-	public ITupleSet asTupleSet() {
+	public IRelation asTupleSet() {
 		return null;
 	}
 
@@ -75,7 +75,7 @@ public class Atom implements IAtom {
 	}
 
 	@Override
-	public AlloySolution getSolution() {
+	public Solution getSolution() {
 		return solution;
 	}
 

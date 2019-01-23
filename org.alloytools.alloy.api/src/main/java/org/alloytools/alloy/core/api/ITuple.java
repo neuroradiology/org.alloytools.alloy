@@ -1,4 +1,4 @@
-package org.alloytools.alloy.solver.api;
+package org.alloytools.alloy.core.api;
 
 /**
  * A list of atoms.
@@ -47,7 +47,7 @@ public interface ITuple extends Comparable<ITuple> {
 	 * @return a tuple set
 	 */
 
-	ITupleSet asTupleSet();
+	IRelation asTupleSet();
 
 	/**
 	 * See {@link #equals(Object)}

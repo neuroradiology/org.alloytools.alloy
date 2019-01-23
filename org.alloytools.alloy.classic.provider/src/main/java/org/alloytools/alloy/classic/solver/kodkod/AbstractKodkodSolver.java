@@ -14,16 +14,16 @@ import org.alloytools.alloy.classic.provider.Atom;
 import org.alloytools.alloy.classic.provider.TupleSet;
 import org.alloytools.alloy.classic.solver.AbstractSolver;
 import org.alloytools.alloy.core.api.Alloy;
-import org.alloytools.alloy.module.api.AlloyModule;
-import org.alloytools.alloy.module.api.TCommand;
-import org.alloytools.alloy.module.api.TField;
-import org.alloytools.alloy.module.api.TSig;
-import org.alloytools.alloy.solver.api.AlloyInstance;
-import org.alloytools.alloy.solver.api.AlloyOptions;
-import org.alloytools.alloy.solver.api.AlloySolution;
-import org.alloytools.alloy.solver.api.AlloySolver;
-import org.alloytools.alloy.solver.api.IAtom;
-import org.alloytools.alloy.solver.api.ITupleSet;
+import org.alloytools.alloy.core.api.IAtom;
+import org.alloytools.alloy.core.api.IRelation;
+import org.alloytools.alloy.core.api.Instance;
+import org.alloytools.alloy.core.api.Module;
+import org.alloytools.alloy.core.api.Solution;
+import org.alloytools.alloy.core.api.Solver;
+import org.alloytools.alloy.core.api.SolverOptions;
+import org.alloytools.alloy.core.api.TCommand;
+import org.alloytools.alloy.core.api.TField;
+import org.alloytools.alloy.core.api.TSig;
 
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.ast.Command;
@@ -38,7 +38,6 @@ import edu.mit.csail.sdg.translator.A4Solution;
 import edu.mit.csail.sdg.translator.A4Tuple;
 import edu.mit.csail.sdg.translator.A4TupleSet;
 import edu.mit.csail.sdg.translator.TranslateAlloyToKodkod;
-import kodkod.engine.Solver;
 import kodkod.engine.satlab.SATFactory;
 
 public abstract class AbstractKodkodSolver extends AbstractSolver {
@@ -48,14 +47,14 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 	}
 
 	@Override
-	public AlloySolution solve(TCommand command, AlloyOptions optionsOrNull, AlloyInstance lowerBound) {
+	public Solution solve(TCommand command, SolverOptions optionsOrNull, Instance lowerBound) {
 		AbstractCommand c = (AbstractCommand) command;
 		return command(command.getModule(), optionsOrNull, c.getOriginalCommand());
 	}
 
-	private AlloySolution command(AlloyModule module, AlloyOptions optionsOrNull, Command command) {
+	private Solution command(Module module, SolverOptions optionsOrNull, Command command) {
 
-		AlloyOptions options = super.processOptions(module, command, optionsOrNull);
+		SolverOptions options = super.processOptions(module, command, optionsOrNull);
 
 		CompModule orig = ((AlloyModuleClassic) module).getOriginalModule();
 		A4Reporter reporter = getReporter();
@@ -71,7 +70,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 		// TSig Int = module.getSig("Int").get();
 		// TSig seqInt = module.getSig("seq/Int").get();
 
-		return new AlloySolution() {
+		return new Solution() {
 
 			Atom createAtom(String o, TSig sig) {
 				return atoms.computeIfAbsent(o, k -> {
@@ -113,17 +112,17 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 			TupleSet none = new TupleSet(this, 0, Collections.emptyList());
 
 			@Override
-			public ITupleSet none() {
+			public IRelation none() {
 				return none;
 			}
 
 			@Override
-			public Iterator<AlloyInstance> iterator() {
+			public Iterator<Instance> iterator() {
 
 				if (!isSatisfied())
 					throw new IllegalStateException("This solution is not satisfied");
 
-				return new Iterator<AlloyInstance>() {
+				return new Iterator<Instance>() {
 
 					A4Solution nextSolution = ai;
 
@@ -133,7 +132,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 					}
 
 					@Override
-					public AlloyInstance next() {
+					public Instance next() {
 
 						if (!hasNext())
 							throw new NoSuchElementException("No instance available");
@@ -141,24 +140,24 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 						A4Solution solution = this.nextSolution;
 						this.nextSolution = solution.next();
 
-						return new AlloyInstance() {
+						return new Instance() {
 
 							@Override
-							public ITupleSet getField(TField field) {
+							public IRelation getField(TField field) {
 								A4TupleSet eval = solution.eval((Field) field);
 
 								return to(eval);
 							}
 
 							@Override
-							public ITupleSet getAtoms(TSig sig) {
+							public IRelation getAtoms(TSig sig) {
 								A4TupleSet set = solution.eval((Sig) sig);
 
 								return to(set);
 							}
 
 							@Override
-							public ITupleSet getVariable(String fun, String var) {
+							public IRelation getVariable(String fun, String var) {
 								String name = "$" + command.getName() + "_" + var;
 								for (ExprVar skolem : solution.getAllSkolems()) {
 									if (skolem.label.equals(name)) {
@@ -170,7 +169,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 							}
 
 							@Override
-							public ITupleSet eval(String cmd) {
+							public IRelation eval(String cmd) {
 								// TODO Auto-generated method stub
 								return null;
 							}
@@ -182,7 +181,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 							}
 
 							@Override
-							public ITupleSet ident() {
+							public IRelation ident() {
 								return universe().toIdent();
 							}
 
@@ -197,12 +196,12 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 			}
 
 			@Override
-			public AlloySolver getSolver() {
+			public Solver getSolver() {
 				return AbstractKodkodSolver.this;
 			}
 
 			@Override
-			public AlloyModule getModule() {
+			public Module getModule() {
 				return module;
 			}
 
@@ -212,7 +211,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 			}
 
 			@Override
-			public AlloyOptions getOptions() {
+			public SolverOptions getOptions() {
 				return options;
 			}
 
@@ -250,7 +249,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 	 * @param classic the classic options
 	 * @param modern the modern options
 	 */
-	protected void setOptions(A4Options classic, AlloyOptions modern) {
+	protected void setOptions(A4Options classic, SolverOptions modern) {
 		classic.a4Helper = new A4Helper() {
 
 			@Override
@@ -266,7 +265,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 	 */
 	protected void setup(KodkodOptions options, A4Solution solution) {
 
-		Solver solver = solution.getSolver();
+		kodkod.engine.Solver solver = solution.getSolver();
 		solver.options()
 			.setSymmetryBreaking(options.symmetry);
 		solver.options()
@@ -293,7 +292,7 @@ public abstract class AbstractKodkodSolver extends AbstractSolver {
 	}
 
 	@Override
-	public AlloyOptions newOptions() {
+	public SolverOptions newOptions() {
 		return new KodkodOptions();
 	}
 

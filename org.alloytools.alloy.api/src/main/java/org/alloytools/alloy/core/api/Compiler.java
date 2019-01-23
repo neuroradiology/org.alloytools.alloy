@@ -2,18 +2,16 @@ package org.alloytools.alloy.core.api;
 
 import java.io.File;
 
-import org.alloytools.alloy.module.api.AlloyModule;
-
 /**
- * An Alloy Compiler that can compile a file or a source and provide an {@link AlloyModule}
+ * An Alloy Compiler that can compile a file or a source and provide an {@link Module}
  */
-public interface AlloyCompiler {
+public interface Compiler {
 	/**
 	 * Compile a source string into a module
 	 * 
 	 * @return a Module
 	 */
-	AlloyModule compileSource(String source);
+	Module compileSource(String source);
 
 	/**
 	 * Compile a path, the path is resolved via the resolver. Any opens in the
@@ -21,7 +19,7 @@ public interface AlloyCompiler {
 	 * 
 	 * @return a Module
 	 */
-	AlloyModule compile(String path);
+	Module compile(String path);
 
 	/**
 	 * Compile a file. Any opens in the content will be also recursively
@@ -31,7 +29,7 @@ public interface AlloyCompiler {
 	 *            the file
 	 * @return a Module
 	 */
-	AlloyModule compile(File file);
+	Module compile(File file);
 
 	String resolve(String path);
 }

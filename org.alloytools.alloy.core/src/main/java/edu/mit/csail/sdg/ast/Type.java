@@ -26,8 +26,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.alloytools.alloy.module.api.TColumnType;
-import org.alloytools.alloy.module.api.TSig;
+import org.alloytools.alloy.core.api.TColumnType;
+import org.alloytools.alloy.core.api.TSig;
 
 import edu.mit.csail.sdg.alloy4.ConstList;
 import edu.mit.csail.sdg.alloy4.ConstList.TempList;

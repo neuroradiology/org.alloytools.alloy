@@ -1,14 +1,14 @@
 package org.alloytools.alloy.classic.provider;
 
-import org.alloytools.alloy.solver.api.AlloySolution;
-import org.alloytools.alloy.solver.api.ITuple;
-import org.alloytools.alloy.solver.api.ITupleSet;
+import org.alloytools.alloy.core.api.Solution;
+import org.alloytools.alloy.core.api.IRelation;
+import org.alloytools.alloy.core.api.ITuple;
 
 abstract class Tuple implements ITuple {
 
-	final AlloySolution solution;
+	final Solution solution;
 
-	public Tuple(AlloySolution solution) {
+	public Tuple(Solution solution) {
 		this.solution = solution;
 	}
 
@@ -29,7 +29,7 @@ abstract class Tuple implements ITuple {
 	}
 
 	@Override
-	public ITupleSet asTupleSet() {
+	public IRelation asTupleSet() {
 		Tuple[] tuples = new Tuple[] {
 			this
 		};

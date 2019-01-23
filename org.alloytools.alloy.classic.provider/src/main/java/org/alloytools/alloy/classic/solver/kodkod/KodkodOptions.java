@@ -1,9 +1,9 @@
 package org.alloytools.alloy.classic.solver.kodkod;
 
-import org.alloytools.alloy.solver.api.AlloyOptions;
+import org.alloytools.alloy.core.api.SolverOptions;
 
 @Description("Options for the Kodkod solver")
-public class KodkodOptions extends AlloyOptions {
+public class KodkodOptions extends SolverOptions {
 
 	@Description("?")
 	public boolean	inferPartialInstance	= false;

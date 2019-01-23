@@ -1,4 +1,4 @@
-package org.alloytools.alloy.module.api;
+package org.alloytools.alloy.core.api;
 
 public interface TRun extends TCommand {
 }
